@@ -1,9 +1,13 @@
 let express = require('express');
 let router = express.Router();
 const clientsController = require('../controllers/clients_controller.js');
+const voitureController = require('../controllers/voiture_controller.js');
 
 
-// router.get('/menuclient', menuController.getMenu);
+// router.post('/permettreajoutplats', adminController.permettreAjoutplat)
+router.post('/ajoutvoiture/:id/:type/:nbPlace/:couleur/:puissance', voitureController.ajouterVoiture);
+
+
 
 
 // app.get('/todos/:id', async (req, res) => {

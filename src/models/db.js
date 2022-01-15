@@ -1,8 +1,8 @@
 // import mongoose from 'mongoose';
 const mongoose = require('mongoose');
 // import cors from 'cors';
-
-mongoose.connect('mongodb://localhost/dbtp2');
+let db= {};
+mongoose.connect('mongodb://localhost/louevite');
 
 //pour renovyer status
 // res.status(400);
@@ -10,6 +10,9 @@ mongoose.connect('mongodb://localhost/dbtp2');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
+db.Schema = Schema;
+db.ObjectId = ObjectId;
+db.mongoose = mongoose;
 // const LocationSchema = new Schema({
 //   id: String,
 //   nom: String,
@@ -18,4 +21,4 @@ const ObjectId = Schema.ObjectId;
 // });
 
 // const Location = mongoose.model('Location', TodosSchema);
-module.export = Schema;
+module.exports = db;

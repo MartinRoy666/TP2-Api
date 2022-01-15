@@ -1,0 +1,1 @@
+let bagnole = require("../models/voiture.js");
