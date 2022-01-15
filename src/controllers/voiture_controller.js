@@ -1,6 +1,13 @@
 let bagnole = require("../models/voiture.js");
 
-exports.getVoitures = async ( req,res,next) => {};
+exports.getVoitures = async ( req,res,next) => { 
+  const data = await bagnole.prototype.afficherVoiture();
+
+  return res.json({
+    "fonction":"getVoitures",
+    "data":data
+  });
+};
 
 exports.ajouterVoiture = async ( req,res,next) => {
   let voiture = new bagnole({
@@ -12,18 +19,10 @@ exports.ajouterVoiture = async ( req,res,next) => {
   });
 
   const data = await bagnole.prototype.ajouterVoiture(voiture);
-  // res.render("commandesEnCours", {data: listevoiture, titre: "Ensemble des Commandes"});
-}
-// app.post("/todos/:nom/:prenom/:titre", async (req, res) => {
-//   let maTodo = new Todos({
-//     id:id,
-//     nom: req.params.nom,
-//     prenom: req.params.prenom,
-//     titre: req.params.titre,
-//   });
 
-//   await maTodo.save();
-//   id = parseInt(id + 1);
-//   return res.json(maTodo);
+  return res.json({
+    "fonction":"ajouterVoiture",
+    "data":data
+  });
   
-// });
+}
