@@ -12,7 +12,7 @@ const VoitureSchema = new db.Schema({
 
 const Voiture = db.mongoose.model('Voiture', VoitureSchema);
 
-Voiture.prototype.ajouterVoiture= (async (detailVoiture, req, res, next) => {
+Voiture.ajouterVoiture = (async (detailVoiture, req, res, next) => {
   
   await detailVoiture.save();
   
@@ -20,8 +20,19 @@ Voiture.prototype.ajouterVoiture= (async (detailVoiture, req, res, next) => {
  
 });
 
-Voiture.prototype.afficherVoiture= (async (req, res) => {
-  let lesVoitures = await Voiture.find();
+Voiture.prototype.afficherVoiture= (async (type, nbPlace, couleur, puissance , req, res) => {
+  
+  let lesVoitures = await Voiture.find(
+    { $or: [
+       {type : type},
+       {nbPlace : nbPlace},
+       {couleur: couleur},
+       {puissance: puissance}
+    ]
+    }
+  ).exec();
+
+
   return lesVoitures;
 
 });

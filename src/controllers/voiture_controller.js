@@ -1,12 +1,22 @@
 let bagnole = require("../models/voiture.js");
 
-exports.getVoitures = async ( req,res,next) => { 
-  const data = await bagnole.prototype.afficherVoiture();
+exports.getVoitures = async ({type, nbPlace, couleur, puissance}) => { 
+  const data = await bagnole.prototype.afficherVoiture(type, nbPlace, couleur, puissance);
+  let liste= [];
+  
+  console.log("dans getVoitures controller");
 
-  return res.json({
-    "fonction":"getVoitures",
-    "data":data
+  data.forEach(element => {
+    // console.log(element);
+    liste.push(element);
+    
   });
+  // return res.json({
+  //   "data":data
+  // });
+  // console.log("la liste" + liste);
+  // return JSON.stringify(data);
+  return liste;
 };
 
 exports.ajouterVoiture = async ( req,res,next) => {
@@ -18,11 +28,10 @@ exports.ajouterVoiture = async ( req,res,next) => {
     puissance: req.params.puissance,
   });
 
-  const data = await bagnole.prototype.ajouterVoiture(voiture);
+  const data = await bagnole.ajouterVoiture(voiture);
 
   return res.json({
     "fonction":"ajouterVoiture",
     "data":data
-  });
-  
+  }); 
 }

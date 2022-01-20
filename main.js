@@ -1,10 +1,23 @@
 const express = require('express');
 const session = require('express-session');
 let bodyParser = require('body-parser');
+const helmet = require('helmet')
+const { graphqlHTTP } = require('express-graphql')
+const schema = require('./src/graphql/schema')
+const root = require('./src/graphql/resolvers')
+
 let route = require('./src/routes/routeindex.js');
 
 const app = express();
 const port = 3010;
+
+app.use(helmet({ contentSecurityPolicy: (process.env.NODE_ENV === 'production') }))
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true,
+}))
 
 app.use(express.static('public'));
 app.use(express.json());      
