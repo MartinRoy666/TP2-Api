@@ -4,19 +4,18 @@ exports.getVoitures = async ({type, nbPlace, couleur, puissance}) => {
   const data = await bagnole.prototype.afficherVoiture(type, nbPlace, couleur, puissance);
   let liste= [];
   
-  console.log("dans getVoitures controller");
-
-  data.forEach(element => {
-    // console.log(element);
-    liste.push(element);
-    
+    data.forEach(element => {
+      liste.push(element);  
   });
-  // return res.json({
-  //   "data":data
-  // });
-  // console.log("la liste" + liste);
-  // return JSON.stringify(data);
   return liste;
+};
+
+exports.getParcVoitures = async (req, res,next) => { 
+  const data = await bagnole.recupererParcVoiture();
+  return res.json({
+    "fonction":"getParcVoitures",
+    "data":data
+  });
 };
 
 exports.ajouterVoiture = async ( req,res,next) => {

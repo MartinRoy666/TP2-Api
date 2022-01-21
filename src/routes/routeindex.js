@@ -11,7 +11,9 @@ router.post('/ajoutvoiture/:id/:type/:nbPlace/:couleur/:puissance', voitureContr
 
 router.post('/reservation', reservationController.fairereservation);
 
-
+router.get('/getParcVoitures', voitureController.getParcVoitures);
+router.get('/afficherreservationclient/:idClient', reservationController.afficherReservationClient);
+router.get('/afficherreservationselondate/:dateRecherche', reservationController.afficherReservationSelonDate);
 // app.get('/todos/:id', async (req, res) => {
 //   // console.log(req.params.id);
 //   let mesTodo =  await Todos.find({id:req.params.id});
