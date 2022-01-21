@@ -29,6 +29,9 @@ Reservation.prototype.reserver = ( async (reservation, req,res,next) => {
 
 Reservation.annuler = ( async (idClient, idReservation, req, res, next) => {
 
+  // si la date de reservation est plus grande que date du jour
+  // on annule
+  // sinon on refuse
 });
 
 Reservation.afficherReservationClient = (async (idClient, req, res, next) => {
@@ -43,7 +46,6 @@ Reservation.afficherReservationClient = (async (idClient, req, res, next) => {
 
     return { "Message" : "Aucune reservation de fait."}
   } else {
-
     return reservationClient;
   }
 
@@ -62,7 +64,7 @@ function addDays(date, days) {
   return result;
 }
 
-Reservation.afficherReservationSelonDate = ( async (dateRecherche, req, res, next) => {
+Reservation.afficherReservationSelonDate = (async (dateRecherche, req, res, next) => {
   
   let dateDebut = new Date(dateRecherche);
   let dateFin = new Date(dateRecherche);
@@ -84,7 +86,15 @@ Reservation.afficherReservationSelonDate = ( async (dateRecherche, req, res, nex
 //En tant que gestionnaire je veux sortir la somme totale de mes ventes 
 //par mois
 Reservation.VenteTotalMois = ( async (req, res) => {
+  let total=0;
+  let reservationDate = await Reservation.find();
 
+  reservationDate.forEach(element => {
+    total = parseInt(total) + parseInt(element.montantLocation);
+    
+  });
+
+  return total
 });
 
 //Reservation.afficherReservationClient

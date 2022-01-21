@@ -2,7 +2,7 @@ let reservation = require("../models/reservation.js");
 
 exports.fairereservation = async (req,res,next) => {
   let laDate = new Date(req.body.date);
-
+  
   let uneReservation = new reservation({
     id: req.body.id,
     idClient: req.body.idClient,
@@ -16,7 +16,7 @@ exports.fairereservation = async (req,res,next) => {
   
   return res.json({
     "fonction":"fairereservation",
-    "data":data
+    "data":req.body.montantLocation
   }); 
   }
 
@@ -40,3 +40,12 @@ exports.fairereservation = async (req,res,next) => {
     }); 
   }
   
+  exports.VenteTotalMois = async(req, res, next) => {
+
+    const data= await reservation.VenteTotalMois();
+
+    return res.json({
+      "fonction":"VenteTotalMois",
+      "data":data
+    });
+  }
