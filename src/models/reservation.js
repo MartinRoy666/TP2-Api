@@ -1,3 +1,4 @@
+const { now } = require("mongoose");
 const db = require("../models/db.js");
 
 // {
@@ -27,15 +28,22 @@ Reservation.prototype.reserver = ( async (reservation, req,res,next) => {
   return reservation;
 });
 
-Reservation.annuler = ( async (idClient, idReservation, req, res, next) => {
+Reservation.annuler = ( async (idReservation, req, res, next) => {
+  const filter = {id : idReservation,
+  date : {$gte: now()}};
 
-  // si la date de reservation est plus grande que date du jour
-  // on annule
-  // sinon on refuse
+  const update = {statut : 0};
+
+  let siExiste = await Reservation.findOneAndUpdate(filter, update, {new: true});
+
+  if (siExiste == null) {
+    return "La réservation ne peut être annulé (vérifier le numéro ainsi que la date de réservation)"
+  } else {
+    return "La réservation a été annulé."
+    }
 });
 
 Reservation.afficherReservationClient = (async (idClient, req, res, next) => {
-// si aucune reservation pour client afficher "aucune reservation de fait"
 
   let reservationClient = await Reservation.find(
     { idClient: idClient}

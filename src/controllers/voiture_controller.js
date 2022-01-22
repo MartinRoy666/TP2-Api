@@ -18,7 +18,7 @@ exports.getParcVoitures = async (req, res,next) => {
   });
 };
 
-exports.ajouterVoiture = async ( req,res,next) => {
+exports.ajouterVoiture = async (req,res,next) => {
   let voiture = new bagnole({
     id: req.params.id,
     type: req.params.type,

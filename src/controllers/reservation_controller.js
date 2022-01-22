@@ -49,3 +49,12 @@ exports.fairereservation = async (req,res,next) => {
       "data":data
     });
   }
+
+  exports.Annuler = async(req,res,next) => {
+    const data = await reservation.annuler(req.params.idReservation);
+
+    return res.json({
+      "fonction":"Annuler",
+      "data":data
+    })
+  }
