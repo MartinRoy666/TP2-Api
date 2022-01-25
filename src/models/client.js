@@ -7,3 +7,9 @@ const ClientSchema = new db.Schema({
 });
 
 const Client = db.mongoose.model('Client', ClientSchema);
+
+Client.getNom = (id) => {
+  return "Martin Roy";
+}
+
+module.exports = Client;

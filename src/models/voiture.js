@@ -1,7 +1,5 @@
 const db = require("../models/db.js");
 
-// localhost:3010/ajoutvoiture/2/Bmw/4/LemansBlue/414/
-
 const VoitureSchema = new db.Schema({
   id: String,
   type: String,
@@ -39,4 +37,12 @@ Voiture.recupererParcVoiture= (async (req, res) => {
   return lesVoitures;
 
 });
+
+Voiture.recupererParId = async(idVoiture, req,res) => {
+  let laVoiture = await Voiture.find({
+    id: idVoiture
+  }).exec();
+
+  return laVoiture;
+}
 module.exports = Voiture;

@@ -1,13 +1,13 @@
 let express = require('express');
 let router = express.Router();
 
-const clientsController = require('../controllers/clients_controller.js');
 const voitureController = require('../controllers/voiture_controller.js');
 const reservationController = require('../controllers/reservation_controller.js');
 
+router.get('/afficherfacture/:idFacture', reservationController.AfficherFacture);
 router.post('/ajoutvoiture/:id/:type/:nbPlace/:couleur/:puissance', voitureController.ajouterVoiture);
 
-router.post('/reservation', reservationController.fairereservation);
+router.post('/reservation', reservationController.faireReservation);
 router.post('/annulation/:idReservation', reservationController.Annuler);
 
 router.get('/getParcVoitures', voitureController.getParcVoitures);
