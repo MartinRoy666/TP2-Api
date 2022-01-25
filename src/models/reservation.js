@@ -1,7 +1,6 @@
 const { now } = require("mongoose");
 const db = require("../models/db.js");
 const client = require("../models/client.js");
-const facture = require("../models/facture.js");
 const Facture = require("../models/facture.js");
 const Voiture = require("../models/voiture.js");
 // {
@@ -129,10 +128,12 @@ Reservation.VenteTotalMois = ( async (req, res) => {
     {"Mois":"Novembre","Montant":0},
     {"Mois":"Decembre","Montant":0}];
 
+
   let lesReservations = await Reservation.find();
   
   lesReservations.forEach(element => {
     let moisBoucle = parseInt(element.date.toISOString().substring(5,7))-1;
+       
     venteTotal[moisBoucle].Montant = venteTotal[moisBoucle].Montant + parseInt(element.montantLocation);
   });
 
@@ -142,6 +143,23 @@ Reservation.VenteTotalMois = ( async (req, res) => {
 
 
 //En tant que gestionnaire je veux connaitre mon % de réservation
+Reservation.pourcentageReservation = async(datePrecise, req,res) => {
+  //verifier nmb voiture
+  let nbVoiture = Voiture.getCount();
+
+  let listeReservation = await Reservation.aggregate([
+  {
+    $group:
+    {
+        _id: {idVehicule: "$idVehicule"},
+    }
+}]);
+
+console.log(listeReservation);
+return listeReservation;
+}
+
+
 
 //En tant que gestionnaire je veux connaitre les disponibilités d’un véhicule précis
 

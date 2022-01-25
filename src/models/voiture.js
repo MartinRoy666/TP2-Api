@@ -45,4 +45,12 @@ Voiture.recupererParId = async(idVoiture, req,res) => {
 
   return laVoiture;
 }
+
+
+Voiture.getCount = async(req, res) => {
+
+  return  Voiture.countDocuments();
+
+}
+
 module.exports = Voiture;

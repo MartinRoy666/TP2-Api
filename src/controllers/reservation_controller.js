@@ -71,3 +71,13 @@ exports.faireReservation = async (req,res,next) => {
       "data":data
     });
   }
+
+  exports.pourcentageReservation = async(req,res,next) => {
+    const data = await reservation.pourcentageReservation(req.params.datePrecise);
+
+    return res.json({
+      "fonction":"pourcentageReservation",
+      "data":data
+    });
+    
+  }
