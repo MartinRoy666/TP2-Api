@@ -2,8 +2,9 @@ let reservation = require("../models/reservation.js");
 
 const prixJour = 25;
 exports.faireReservation = async (req,res,next) => {
-  let laDate = new Date(req.body.date);
-  
+
+  let laDate = new Date(req.body.dateDebut);
+
   let uneReservation = new reservation({
     id: req.body.id,
     idFacture: req.body.id + laDate.toISOString().split('T')[0],
@@ -11,7 +12,7 @@ exports.faireReservation = async (req,res,next) => {
     idVehicule: req.body.idVehicule,
     montantLocation: req.body.duree * prixJour,
     statut: req.body.statut,
-    date: laDate.toISOString().split('T')[0],
+    dateDebut: laDate,
     duree: req.body.duree
   });
   const data = await reservation.reserver(uneReservation);
@@ -79,5 +80,13 @@ exports.faireReservation = async (req,res,next) => {
       "fonction":"pourcentageReservation",
       "data":data
     });
-    
+  }
+
+  exports.disponibiliteVehicule = async(req,res,next) => {
+    const data = await reservation.disponibiliteCar(req.params.idVehicule, req.params.idMois);
+
+    return res.json({
+      "fonction":"disponibiliteVehicule",
+      "data":data
+    });
   }

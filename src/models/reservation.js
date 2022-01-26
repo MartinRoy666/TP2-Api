@@ -20,7 +20,7 @@ const ReservationSchema = new db.Schema({
   idVehicule: String,
   montantLocation: String,
   statut: String,
-  date: Date,
+  dateDebut: Date,
   duree: String,
 });
 
@@ -33,7 +33,7 @@ Reservation.reserver = ( async (reservation, req,res,next) => {
 
 Reservation.annuler = ( async (idReservation, req, res, next) => {
   const filter = {id : idReservation,
-  date : {$gte: now()}};
+    dateDebut : {$gte: now()}};
 
   const update = {statut : 0};
 
@@ -75,7 +75,7 @@ Reservation.getFacture = async(idFacture, req,res) => {
   let laFacture = new Facture();
   laFacture.nomClient = await client.getNom(reservationClient[0].idClient);
   laFacture.montant = reservationClient[0].montantLocation;
-  laFacture.dateDebut = reservationClient[0].date.toISOString().split('T')[0];
+  laFacture.dateDebut = reservationClient[0].dateDebut.toISOString().split('T')[0];
   laFacture.duree = reservationClient[0].duree;
   laFacture.nomvoiture = laVoiture[0].type;
 
@@ -98,7 +98,7 @@ Reservation.afficherReservationSelonDate = (async (dateRecherche, req, res, next
   let dateFin = new Date(dateRecherche);
 
   let reservationDate = await Reservation.find(
-    { date: {
+    { dateDebut: {
       $gte: dateDebut.toISOString().split('T')[0],
       $lt: addDays(dateFin,1).toISOString().split('T')[0]
   }}
@@ -132,7 +132,7 @@ Reservation.VenteTotalMois = ( async (req, res) => {
   let lesReservations = await Reservation.find();
   
   lesReservations.forEach(element => {
-    let moisBoucle = parseInt(element.date.toISOString().substring(5,7))-1;
+    let moisBoucle = parseInt(element.dateDebut.toISOString().substring(5,7))-1;
        
     venteTotal[moisBoucle].Montant = venteTotal[moisBoucle].Montant + parseInt(element.montantLocation);
   });
@@ -144,24 +144,58 @@ Reservation.VenteTotalMois = ( async (req, res) => {
 
 //En tant que gestionnaire je veux connaitre mon % de réservation
 Reservation.pourcentageReservation = async(datePrecise, req,res) => {
-  //verifier nmb voiture
-  let nbVoiture = Voiture.getCount();
+  
+  let nbVoiture = await Voiture.getCount();
 
   let listeReservation = await Reservation.aggregate([
+  { 
+     $match : { "dateDebut": {  $gte: new Date(datePrecise), $lt: addDays(new Date(datePrecise),1) }}
+  },
   {
     $group:
     {
-        _id: {idVehicule: "$idVehicule"},
+        _id: { idVehicule: "$idVehicule" },
     }
-}]);
+  }
+]);
 
-console.log(listeReservation);
-return listeReservation;
+  let pourcent = (listeReservation.length * 100) / nbVoiture;
+  return pourcent;
 }
 
 
-
+ajoutReservation = () => {
+  //
+  let calend= [];
+  return calend;
+}
 //En tant que gestionnaire je veux connaitre les disponibilités d’un véhicule précis
+
+Reservation.disponibiliteCar = async(idVehicule, idMois,req,res) => {
+
+  let lesReservations = await Reservation.find({
+    idVehicule:idVehicule
+  }).exec();
+
+  let disponibiliteAutosMois=[{"Mois":"Janvier","jours":Array(31).fill("D")},
+  {"Mois":"Fevrier","Jours":Array(28).fill("D")},
+  {"Mois":"Mars","Jours":Array(31).fill("D")},
+  {"Mois":"Avril","Jours":Array(30).fill("D")},
+  {"Mois":"Mai","Jours":Array(31).fill("D")},
+  {"Mois":"Juin","Jours":Array(30).fill("D")},
+  {"Mois":"Juillet","Jours":Array(31).fill("D")},
+  {"Mois":"Aout","Jours":Array(31).fill("D")},
+  {"Mois":"Septembre","Jours":Array(30).fill("D")},
+  {"Mois":"Octobre","Jours":Array(31).fill("D")},
+  {"Mois":"Novembre","Jours":Array(30).fill("D")},
+  {"Mois":"Decembre","Jours":Array(31).fill("D")}];
+
+  console.log(disponibiliteAutosMois);
+
+
+  return "allo";
+}
+
 
 
 module.exports = Reservation;

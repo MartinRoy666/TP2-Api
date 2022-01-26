@@ -16,4 +16,7 @@ router.get('/afficherreservationselondate/:dateRecherche', reservationController
 
 router.get('/getventetotalmois', reservationController.VenteTotalMois);
 router.get('/getpourcentagereservation/:datePrecise', reservationController.pourcentageReservation);
+
+router.get('/getDisponibilite/:idVehicule/:idMois', reservationController.disponibiliteVehicule);
+
 module.exports = router;
