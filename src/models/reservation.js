@@ -195,12 +195,12 @@ Reservation.disponibiliteCar = async(idVehicule, req,res) => {
       listeReservation.forEach(element => {
         let jourDebut = parseInt(element.dateDebut.toISOString().substring(8,10));
 
-        console.log(element.dateDebut + " -- " + element.duree);
-        console.log(jourDebut);
-        console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
+        // console.log(element.dateDebut + " -- " + element.duree);
+        // console.log(jourDebut);
+        // console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
 
         for (let index = parseInt(jourDebut)-1; index < (jourDebut + parseInt(element.duree))-1; index++) {
-          console.log(index);
+          // console.log(index);
           try {
             disponibiliteAutosMois[element.dateDebut.getMonth()].Jours.splice(index, 1, "X");
           }
@@ -208,7 +208,7 @@ Reservation.disponibiliteCar = async(idVehicule, req,res) => {
             console.log(err);
           }
         }
-        console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
+        // console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
       });
   }
 
