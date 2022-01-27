@@ -83,7 +83,7 @@ exports.faireReservation = async (req,res,next) => {
   }
 
   exports.disponibiliteVehicule = async(req,res,next) => {
-    const data = await reservation.disponibiliteCar(req.params.idVehicule, req.params.idMois);
+    const data = await reservation.disponibiliteCar(req.params.idVehicule);
 
     return res.json({
       "fonction":"disponibiliteVehicule",

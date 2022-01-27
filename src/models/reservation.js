@@ -164,20 +164,17 @@ Reservation.pourcentageReservation = async(datePrecise, req,res) => {
 }
 
 
-ajoutReservation = () => {
+function ajoutReservation(dateDebut, duree) {
   //
   let calend= [];
   return calend;
 }
+
 //En tant que gestionnaire je veux connaitre les disponibilités d’un véhicule précis
 
-Reservation.disponibiliteCar = async(idVehicule, idMois,req,res) => {
+Reservation.disponibiliteCar = async(idVehicule, req,res) => {
 
-  let lesReservations = await Reservation.find({
-    idVehicule:idVehicule
-  }).exec();
-
-  let disponibiliteAutosMois=[{"Mois":"Janvier","jours":Array(31).fill("D")},
+  let disponibiliteAutosMois=[{"Mois":"Janvier","Jours":Array(31).fill("D")},
   {"Mois":"Fevrier","Jours":Array(28).fill("D")},
   {"Mois":"Mars","Jours":Array(31).fill("D")},
   {"Mois":"Avril","Jours":Array(30).fill("D")},
@@ -190,10 +187,33 @@ Reservation.disponibiliteCar = async(idVehicule, idMois,req,res) => {
   {"Mois":"Novembre","Jours":Array(30).fill("D")},
   {"Mois":"Decembre","Jours":Array(31).fill("D")}];
 
-  console.log(disponibiliteAutosMois);
+  let listeReservation = await Reservation.find(
+    { idVehicule: idVehicule }
+  ).sort({dateDebut: 'asc'});
 
+  if (listeReservation !== null) {
+      listeReservation.forEach(element => {
+        let jourDebut = parseInt(element.dateDebut.toISOString().substring(8,10));
 
-  return "allo";
+        console.log(element.dateDebut + " -- " + element.duree);
+        console.log(jourDebut);
+        console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
+
+        for (let index = parseInt(jourDebut)-1; index < (jourDebut + parseInt(element.duree))-1; index++) {
+          console.log(index);
+          try {
+            disponibiliteAutosMois[element.dateDebut.getMonth()].Jours.splice(index, 1, "X");
+          }
+          catch(err) {
+            console.log(err);
+          }
+        }
+        console.log(disponibiliteAutosMois[element.dateDebut.getMonth()].Jours);
+      });
+  }
+
+  // console.log(disponibiliteAutosMois[0]);
+  return disponibiliteAutosMois;
 }
 
 
